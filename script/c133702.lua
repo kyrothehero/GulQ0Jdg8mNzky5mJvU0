@@ -8,8 +8,10 @@ function s.initial_effect(c)
     e1:SetCategory(CATEGORY_TOHAND+CATEGORY_SEARCH)
     e1:SetType(EFFECT_TYPE_QUICK_O)
     e1:SetCode(EVENT_FREE_CHAIN)
+	e1:SetRange(LOCATION_HAND)
     e1:SetCountLimit(1,id)
     e1:SetCondition(s.thcon)
+	e1:SetCost(s.thcost)
     e1:SetTarget(s.thtg)
     e1:SetOperation(s.thop)
     c:RegisterEffect(e1)
@@ -59,7 +61,7 @@ s.listed_names={id}
 s.listed_series={T0_SETNAME}
 function s.setfilter(c,e,tp)
 	if not c:IsSetCard(T0_SETNAME) then return end
-	if c:IsMonster() and not c:IsCode(id) then 
+	if c:IsMonster() then 
 		return Duel.GetLocationCount(tp,LOCATION_MZONE)>0 and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEDOWN_DEFENSE)
 	elseif c:IsType(TYPE_SPELL+TYPE_TRAP) then 
 		return (c:IsType(TYPE_FIELD) or Duel.GetLocationCount(tp,LOCATION_SZONE)>0) and c:IsSSetable()
@@ -74,9 +76,9 @@ function s.set_operation(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
     local g=Duel.SelectMatchingCard(tp,s.filter,tp,LOCATION_DECK,0,1,1,nil)
     local tc=g:GetFirst()
-	--if not tc or not tc:IsRelateToEffect(e) then return end
+	if not tc or not tc:IsRelateToEffect(e) then return end
 	if tc:IsMonster() then
-        Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,tp,LOCATION_DECK)
+        --Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,g,1,tp,LOCATION_DECK)
 		Duel.SpecialSummon(tc,0,tp,tp,false,false,POS_FACEDOWN_DEFENSE)
 	elseif tc:IsType(TYPE_SPELL+TYPE_TRAP) then
         --Duel.SetOperationInfo(0,CATEGORY_LEAVE_DECK,g,1,tp,LOCATION_DECK)
