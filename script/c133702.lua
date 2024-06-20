@@ -18,7 +18,6 @@ function s.initial_effect(c)
     --If this card is Summoned: You can Set 1 "T-0" card directly from your Deck.
     local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,1))
-	--e2:SetCategory(CATEGORY_SPECIAL_SUMMON)
 	e2:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
 	e2:SetCode(EVENT_SUMMON_SUCCESS)
@@ -68,8 +67,8 @@ function s.setfilter(c,e,tp)
 	end
 	return false
 end
-function s.set_target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-    if chkc then return chkc:IsLocation(LOCATION_DECK) and chkc:IsControler(tp) and s.setfilter(chkc,e,tp) end
+function s.set_target(e,tp,eg,ep,ev,re,r,rp,chk)
+    --if chkc then return chkc:IsLocation(LOCATION_DECK) and chkc:IsControler(tp) and s.setfilter(chkc,e,tp) end
     if chk==0 then return Duel.IsExistingTarget(s.setfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 end
 function s.set_operation(e,tp,eg,ep,ev,re,r,rp)
