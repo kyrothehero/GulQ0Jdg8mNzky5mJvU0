@@ -73,7 +73,7 @@ function s.set_target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 end
 function s.set_operation(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
-    local g=Duel.SelectMatchingCard(tp,s.setfilter,tp,LOCATION_DECK,0,1,1,nil)
+    local g=Duel.SelectMatchingCard(tp,s.setfilter,tp,LOCATION_DECK,0,1,1,nil,e,tp)
     local tc=g:GetFirst()
 	if not tc or not tc:IsRelateToEffect(e) then return end
 	if tc:IsMonster() then
