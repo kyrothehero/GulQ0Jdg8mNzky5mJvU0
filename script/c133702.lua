@@ -67,9 +67,9 @@ function s.setfilter(c,e,tp)
 	end
 	return false
 end
-function s.set_target(e,tp,eg,ep,ev,re,r,rp,chk)
+function s.set_target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
     if chkc then return chkc:IsLocation(LOCATION_DECK) and chkc:IsControler(tp) and s.setfilter(chkc,e,tp) end
-    if chk==0 then return Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil) end
+    if chk==0 then return Duel.IsExistingMatchingCard(s.setfilter,tp,LOCATION_DECK,0,1,nil,e,tp) end
 end
 function s.set_operation(e,tp,eg,ep,ev,re,r,rp)
     Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SET)
