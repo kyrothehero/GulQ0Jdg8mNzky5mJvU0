@@ -59,12 +59,10 @@ function s.ss_filter(c,e,tp)
 end
 function s.ss_operation(e,tp,eg,ep,ev,re,r,rp)
     local c=e:GetHandler()
-    Debug.Message("Performing operation")
     --if not c:IsRelateToEffect(e) then return end
-    Debug.Message("c:IsRelateToEffect(e) == true")
-    if not Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)>0 then return end
+    if Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)<=0 then return end
     Duel.BreakEffect()
-	if not Duel.Destroy(c,REASON_EFFECT)>0 then return end
+	if Duel.Destroy(c,REASON_EFFECT)<=0 then return end
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.BreakEffect()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
