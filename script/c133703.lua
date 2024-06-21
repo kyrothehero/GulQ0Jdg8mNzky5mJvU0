@@ -39,7 +39,7 @@ function s.initial_effect(c)
 end
 
 function s.ss_condition(e,tp,eg,ep,ev,re,r,rp)
-	return eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+	return ep~=tp or eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
 end
 function s.ss_cost(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
