@@ -46,7 +46,7 @@ function s.ss_cost(e,tp,eg,ep,ev,re,r,rp)
     Debug.Message("Performing cost")
 	local c=e:GetHandler()
 	--if not c:IsRelateToEffect(e) then return end
-	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
+	Duel.SpecialSummon(c,0,tp,tp,true,true,POS_FACEUP)
 end
 function s.ss_target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk == 0 then
