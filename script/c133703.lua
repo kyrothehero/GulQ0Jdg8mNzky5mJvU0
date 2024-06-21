@@ -39,15 +39,18 @@ function s.initial_effect(c)
 end
 
 function s.ss_condition(e,tp,eg,ep,ev,re,r,rp)
+    Debug.Message("Checking condition")
 	return ep~=tp or eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
 end
 function s.ss_cost(e,tp,eg,ep,ev,re,r,rp)
+    Debug.Message("Performing cost")
 	local c=e:GetHandler()
 	--if not c:IsRelateToEffect(e) then return end
 	Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
 end
 function s.ss_target(e,tp,eg,ep,ev,re,r,rp,chk)
     if chk == 0 then
+        Debug.Message("Checking target")
         return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
             and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
     end
@@ -58,6 +61,7 @@ function s.ss_filter(c,e,tp)
 	return c:IsSetCard(T0_SETNAME) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) and not c:IsCode(id)
 end
 function s.ss_operation(e,tp,eg,ep,ev,re,r,rp)
+    Debug.Message("Performing operation")
     if not e:GetHandler():IsRelateToEffect(e) then return end
 	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
 	if not Duel.Destroy(e:GetHandler(),REASON_EFFECT)>0 then return end
