@@ -25,6 +25,15 @@ function s.initial_effect(c)
 	local g=Group.CreateGroup()
 	g:KeepAlive()
 	e1:SetLabelObject(g)
+    --Register cards sent to the GY
+	local e69=Effect.CreateEffect(c)
+	e69:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e69:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
+	e69:SetCode(EVENT_TO_GRAVE)
+	e69:SetRange(LOCATION_SZONE)
+	e69:SetLabelObject(e1)
+	e69:SetOperation(s.regop)
+	c:RegisterEffect(e69)
 
     --If this card is sent to the GY by card effect: 
     --You can send 1 "T-0" card from your Deck to the GY.
@@ -72,6 +81,21 @@ function s.reborn_operation(e,tp,eg,ep,ev,re,r,rp)
 		e1:SetReset(RESET_EVENT+RESETS_REDIRECT)
 		e1:SetValue(LOCATION_REMOVED)
 		tc:RegisterEffect(e1,true)
+	end
+end
+
+function s.regop(e,tp,eg,ep,ev,re,r,rp)
+	local tg=eg:Filter(s.reborn_filter,nil,e,tp)
+	if #tg>0 then
+		for tc in tg:Iter() do
+			tc:RegisterFlagEffect(id,RESET_CHAIN,0,1)
+		end
+		local g=e:GetLabelObject():GetLabelObject()
+		if Duel.GetCurrentChain()==0 then g:Clear() end
+		g:Merge(tg)
+		g:Remove(function(c) return c:GetFlagEffect(id)==0 end,nil)
+		e:GetLabelObject():SetLabelObject(g)
+		Duel.RaiseSingleEvent(e:GetHandler(),EVENT_CUSTOM+id,e,0,tp,tp,0)
 	end
 end
 
