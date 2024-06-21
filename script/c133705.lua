@@ -2,6 +2,12 @@
 local T0_SETNAME = 0x69ac
 local s,id=GetID()
 function s.initial_effect(c)
+    --Continuous spell activation (does nothing)
+	local e0=Effect.CreateEffect(c)
+	e0:SetType(EFFECT_TYPE_ACTIVATE)
+	e0:SetCode(EVENT_FREE_CHAIN)
+	c:RegisterEffect(e0)
+
     --If a "T-0" monster(s) is sent to your GY (except during the Damage Step): 
     --You can target 1 of those monsters; 
     --Special Summon it, but banish it when it leaves the field.
