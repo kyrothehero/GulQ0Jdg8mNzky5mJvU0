@@ -46,12 +46,6 @@ function s.ss_cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsDiscardable() end
 	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
 end
-function s.ss_cost(e,tp,eg,ep,ev,re,r,rp)
-	local c=e:GetHandler()
-	--if not c:IsRelateToEffect(e) then return end
-	--Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
-    Duel.SSet(tp,c,tp,true)
-end
 function s.ss_target(e,tp,eg,ep,ev,re,r,rp,chk)
     local c=e:GetHandler()
     if chk == 0 then
