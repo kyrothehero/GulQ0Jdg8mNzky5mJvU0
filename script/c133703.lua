@@ -80,8 +80,8 @@ function s.add_condition(e,tp,eg,ep,ev,re,r,rp)
 	return (r&REASON_EFFECT+REASON_BATTLE)~=0 and e:GetHandler():IsPreviousLocation(LOCATION_ONFIELD) 
 		and not (re and re:GetHandler():IsCode(id))
 end
-function s.add_filter(c,e,tp)
-	return c:IsSetCard(T0_SETNAME) and c:IsSpellTrap()
+function s.add_filter(c)
+	return c:IsSetCard(T0_SETNAME) and c:IsSpellTrap() and c:IsAbleToHand()
 end
 function s.add_target(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.add_filter,tp,LOCATION_DECK,0,1,nil) end
