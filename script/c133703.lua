@@ -3,7 +3,7 @@ local T0_SETNAME = 0x69ac
 local s,id=GetID()
 function s.initial_effect(c)
     --If your opponent Normal or Special Summons a monster(s): 
-    --You can Special Summon this card from your hand; Destroy this card on the field, 
+    --You can discard this card; Special Summon this card from the GY, then destroy this card on the field,
     --then Special Summon 1 "T-0" monster from your hand or Deck, except "T-0 Kamikaze".
     local e1=Effect.CreateEffect(c)
 	e1:SetDescription(aux.Stringid(id,0))
@@ -42,30 +42,36 @@ function s.ss_condition(e,tp,eg,ep,ev,re,r,rp)
     Debug.Message("Checking condition")
 	return ep~=tp or eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
 end
+function s.ss_cost(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return e:GetHandler():IsDiscardable() end
+	Duel.SendtoGrave(e:GetHandler(),REASON_COST+REASON_DISCARD)
+end
 function s.ss_cost(e,tp,eg,ep,ev,re,r,rp)
-    Debug.Message("Performing cost")
 	local c=e:GetHandler()
 	--if not c:IsRelateToEffect(e) then return end
 	--Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)
     Duel.SSet(tp,c,tp,true)
 end
 function s.ss_target(e,tp,eg,ep,ev,re,r,rp,chk)
+    local c=e:GetHandler()
     if chk == 0 then
         Debug.Message("Checking target")
         return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-            and e:GetHandler():IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
+            and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP)
     end
-    Duel.SetOperationInfo(0,CATEGORY_DESTROY,e:GetHandler(),1,0,0)
-    --Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,deck,1,0,0)
+    Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,c,1,tp,LOCATION_GRAVE)
+    Duel.SetOperationInfo(0,CATEGORY_DESTROY,c,1,0,0)
 end
 function s.ss_filter(c,e,tp)
 	return c:IsSetCard(T0_SETNAME) and c:IsCanBeSpecialSummoned(e,0,tp,false,false,POS_FACEUP) and not c:IsCode(id)
 end
 function s.ss_operation(e,tp,eg,ep,ev,re,r,rp)
+    local c=e:GetHandler()
     Debug.Message("Performing operation")
-    if not e:GetHandler():IsRelateToEffect(e) then return end
-	local p,d=Duel.GetChainInfo(0,CHAININFO_TARGET_PLAYER,CHAININFO_TARGET_PARAM)
-	if not Duel.Destroy(e:GetHandler(),REASON_EFFECT)>0 then return end
+    if not c:IsRelateToEffect(e) then return end
+    if not Duel.SpecialSummon(c,0,tp,tp,false,false,POS_FACEUP)>0 then return end
+    Duel.BreakEffect()
+	if not Duel.Destroy(c,REASON_EFFECT)>0 then return end
     if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.BreakEffect()
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
