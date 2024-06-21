@@ -21,6 +21,7 @@ function s.initial_effect(c)
 
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
+    e2:SetCondition(s.ns_condition)
 	c:RegisterEffect(e2)
 
     --If this card on the field is destroyed by card effect, except "T-0 Kamikaze", or by battle:
@@ -39,7 +40,10 @@ function s.initial_effect(c)
 end
 
 function s.ss_condition(e,tp,eg,ep,ev,re,r,rp)
-	return ep~=tp or eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+	return eg:IsExists(Card.IsSummonPlayer,1,nil,1-tp)
+end
+function s.ns_condition(e,tp,eg,ep,ev,re,r,rp)
+    return ep~=tp
 end
 function s.ss_cost(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return e:GetHandler():IsDiscardable() end
