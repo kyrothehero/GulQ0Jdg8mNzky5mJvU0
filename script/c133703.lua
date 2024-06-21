@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetProperty(EFFECT_FLAG_DELAY)
 	e1:SetRange(LOCATION_HAND)
 	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.ss_condition)
+	e1:SetCondition(s.ns_condition)
 	e1:SetCost(s.ss_cost)
 	e1:SetTarget(s.ss_target)
 	e1:SetOperation(s.ss_operation)
@@ -21,7 +21,7 @@ function s.initial_effect(c)
 
 	local e2=e1:Clone()
 	e2:SetCode(EVENT_SPSUMMON_SUCCESS)
-    e2:SetCondition(s.ns_condition)
+    e2:SetCondition(s.ss_condition)
 	c:RegisterEffect(e2)
 
     --If this card on the field is destroyed by card effect, except "T-0 Kamikaze", or by battle:
