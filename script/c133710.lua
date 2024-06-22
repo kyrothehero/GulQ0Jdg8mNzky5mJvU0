@@ -5,17 +5,13 @@ function s.initial_effect(c)
     --When your opponent activates a card or effect the turn this card was Special Summoned (Quick Effect): 
     --You can negate the activation. You can only use this effect of "T-0 Chainer" once per turn.
     local e1=Effect.CreateEffect(c)
-	e1:SetDescription(aux.Stringid(id,1))
-	e1:SetCategory(CATEGORY_NEGATE)
-	e1:SetType(EFFECT_TYPE_QUICK_O)
-	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
-	e1:SetCode(EVENT_CHAINING)
-	e1:SetRange(LOCATION_MZONE)
-    e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
-	e1:SetCountLimit(1,id)
-	e1:SetCondition(s.negate_con)
-	e1:SetTarget(s.negate_tg)
-	e1:SetOperation(s.negate_op)
+	e1:SetDescription(aux.Stringid(id,0))
+	e1:SetCategory(CATEGORY_DRAW)
+	e1:SetType(EFFECT_TYPE_SINGLE+EFFECT_TYPE_TRIGGER_F)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_PLAYER_TARGET)
+	e1:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e1:SetTarget(s.target)
+	e1:SetOperation(s.operation)
 	c:RegisterEffect(e1)
 
     --If this card is Normal Summoned: You can send 1 card from your hand to the GY, 
@@ -39,6 +35,26 @@ function s.negate_tg(e,tp,eg,ep,ev,re,r,rp,chk)
 end
 function s.negate_op(e,tp,eg,ep,ev,re,r,rp)
 	Duel.NegateActivation(ev)
+end
+
+function s.target(e,tp,eg,ep,ev,re,r,rp,chk)
+	if chk==0 then return true end
+end
+function s.operation(e,tp,eg,ep,ev,re,r,rp)
+    local c = e:GetHandler()
+	local e1=Effect.CreateEffect(c)
+	e1:SetDescription(aux.Stringid(id,1))
+	e1:SetCategory(CATEGORY_NEGATE)
+	e1:SetType(EFFECT_TYPE_QUICK_O)
+	e1:SetProperty(EFFECT_FLAG_DAMAGE_STEP+EFFECT_FLAG_DAMAGE_CAL)
+	e1:SetCode(EVENT_CHAINING)
+	e1:SetRange(LOCATION_MZONE)
+    e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+	e1:SetCountLimit(1,id)
+	e1:SetCondition(s.negate_con)
+	e1:SetTarget(s.negate_tg)
+	e1:SetOperation(s.negate_op)
+	c:RegisterEffect(e1)
 end
 
 function s.add_filter(c)
