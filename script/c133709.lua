@@ -41,7 +41,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 			if #g==0 then return end
             Duel.BreakEffect()
 			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
-			local sg=g:Select(tp,ct,ct,nil)
+			local sg=g:Select(tp,ct-1,ct-1,nil)
 			Duel.SendtoDeck(sg,nil,2,REASON_EFFECT)
 		end
 	end
