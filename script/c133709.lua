@@ -36,7 +36,7 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
 	if tc:IsRelateToEffect(e) and Duel.Destroy(tc,REASON_EFFECT)>0 and e:GetHandler():IsOnField() then
         local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_ONFIELD)
 		Duel.BreakEffect()
-		if Duel.Draw(p,ct,REASON_EFFECT)==ct and ct-1 ~= 0 then
+		if Duel.Draw(tp,ct,REASON_EFFECT)==ct and ct-1 ~= 0 then
 			local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,p,LOCATION_HAND,0,nil)
 			if #g==0 then return end
             Duel.BreakEffect()
