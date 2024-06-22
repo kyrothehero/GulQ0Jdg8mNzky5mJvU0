@@ -22,16 +22,6 @@ function s.initial_effect(c)
 	e2:SetCode(EVENT_CHAIN_SOLVED)
 	e2:SetCondition(s.pop_con)
 	c:RegisterEffect(e2)
-    --[[
-    aux.GlobalCheck(s,function()
-		local ge1=Effect.CreateEffect(c)
-		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-		ge1:SetCode(EVENT_CHAIN_SOLVED)
-		--ge1:SetCondition(s.regcon)
-		ge1:SetOperation(s.regop)
-		Duel.RegisterEffect(ge1,0)
-	end)
-    ]]
 
     --During the Main Phase (Quick Effect): You can target 1 monster your opponent controls; 
     --If that monster is still on the field when this effect resolves, shuffle it into the Deck, 
@@ -71,10 +61,6 @@ end
 
 function s.pop_con(e,tp,eg,ep,ev,re,r,rp)
 	return ep==1-tp
-end
-
-function s.regop(e,tp,eg,ep,ev,re,r,rp)
-	Duel.RaiseEvent(eg,EVENT_CUSTOM+id,re,r,rp,ep,0)
 end
 
 function s.spin_con(e,tp,eg,ep,ev,re,r,rp)
