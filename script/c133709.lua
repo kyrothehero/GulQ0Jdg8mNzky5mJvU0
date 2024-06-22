@@ -37,11 +37,11 @@ function s.desop(e,tp,eg,ep,ev,re,r,rp)
         local ct=Duel.GetFieldGroupCount(tp,0,LOCATION_ONFIELD)
 		Duel.BreakEffect()
 		if Duel.Draw(tp,ct,REASON_EFFECT)==ct and ct-1 ~= 0 then
-			local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,p,LOCATION_HAND,0,nil)
+			local g=Duel.GetMatchingGroup(Card.IsAbleToDeck,tp,LOCATION_HAND,0,nil)
 			if #g==0 then return end
             Duel.BreakEffect()
-			Duel.Hint(HINT_SELECTMSG,p,HINTMSG_TODECK)
-			local sg=g:Select(p,ct,ct,nil)
+			Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_TODECK)
+			local sg=g:Select(tp,ct,ct,nil)
 			Duel.SendtoDeck(sg,nil,2,REASON_EFFECT)
 		end
 	end
