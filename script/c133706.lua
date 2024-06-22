@@ -21,7 +21,7 @@ function s.initial_effect(c)
     --You can target 1 face-up monster you control; 
     --This turn, that monster can attack twice each Battle Phase, also it inflicts piercing battle damage.
 	local e2=Effect.CreateEffect(c)
-    e2:SetDescription(aux.Stringid(id,69))
+    e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
     e2:SetRange(LOCATION_MZONE)
@@ -60,9 +60,7 @@ function s.maul_filter(c)
 end
 function s.maul_target(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	if chkc then return chkc:IsLocation(LOCATION_MZONE) and chkc:IsControler(tp) and s.maul_filter(chkc) end
-	if chk==0 then
-		return Duel.IsExistingTarget(s.maul_filter,tp,LOCATION_MZONE,0,1,nil)
-	end
+	if chk==0 then return Duel.IsExistingTarget(s.maul_filter,tp,LOCATION_MZONE,0,1,nil) end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_FACEUP)
 	Duel.SelectTarget(tp,s.maul_filter,tp,LOCATION_MZONE,0,1,1,nil)
 end
