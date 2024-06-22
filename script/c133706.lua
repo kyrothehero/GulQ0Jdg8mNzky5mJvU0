@@ -21,11 +21,11 @@ function s.initial_effect(c)
     --You can target 1 face-up monster you control; 
     --This turn, that monster can attack twice each Battle Phase, also it inflicts piercing battle damage.
 	local e2=Effect.CreateEffect(c)
-    e3:SetDescription(aux.Stringid(id,69))
+    e2:SetDescription(aux.Stringid(id,69))
 	e2:SetType(EFFECT_TYPE_IGNITION)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET)
     e2:SetRange(LOCATION_MZONE)
-    e3:SetCountLimit(1,id)
+    e2:SetCountLimit(1,id)
 	e2:SetCondition(s.maul_condition)
 	e2:SetTarget(s.maul_target)
 	e2:SetOperation(s.maul_operation)
