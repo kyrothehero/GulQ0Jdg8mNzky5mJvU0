@@ -50,7 +50,7 @@ function s.discard_tg(e,tp,eg,ep,ev,re,r,rp,chk)
 		and Duel.IsExistingMatchingCard(s.discard_ss_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
 	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
 end
-function s.thfilter(c)
+function s.discard_add_filter(c)
 	return c:IsSetCard(T0_SETNAME) and c:IsAbleToHand()
 end
 function s.discard_op(e,tp,eg,ep,ev,re,r,rp)
@@ -60,7 +60,7 @@ function s.discard_op(e,tp,eg,ep,ev,re,r,rp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
-    local sg=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.thfilter),tp,LOCATION_GRAVE,0,nil)
+    local sg=Duel.GetMatchingGroup(aux.NecroValleyFilter(s.discard_add_filter),tp,LOCATION_GRAVE,0,nil)
     if #sg>0 and Duel.SelectYesNo(tp,aux.Stringid(id,0)) then
         Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
         sg=sg:Select(tp,1,1,nil)
