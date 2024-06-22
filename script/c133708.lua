@@ -19,7 +19,7 @@ function s.initial_effect(c)
     local e2=e1:Clone()
 	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
-	e2:SetCode(EVENT_CUSTOM+id)
+	e2:SetCode(EVENT_CHAIN_SOLVED)
 	e2:SetCondition(s.pop_con)
 	c:RegisterEffect(e2)
     --[[
