@@ -15,7 +15,7 @@ function s.initial_effect(c)
 	e1:SetCondition(s.negate_con)
 	e1:SetTarget(s.negate_tg)
 	e1:SetOperation(s.negate_op)
-    e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
+    --e1:SetReset(RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END)
 	c:RegisterEffect(e1)
 
     --If this card is Normal Summoned: You can send 1 card from your hand to the GY, 
