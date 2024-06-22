@@ -42,7 +42,7 @@ function s.negate_op(e,tp,eg,ep,ev,re,r,rp)
 end
 
 function s.add_filter(c)
-	return c:IsSetCard(T0_SETNAME) and c:IsAbleToHand()
+	return c:IsSetCard(T0_SETNAME) and c:IsMonster() and c:IsAbleToHand()
 end
 function s.add_tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.IsExistingMatchingCard(s.add_filter,tp,LOCATION_DECK,0,1,nil) end
