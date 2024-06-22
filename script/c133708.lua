@@ -17,11 +17,12 @@ function s.initial_effect(c)
 	c:RegisterEffect(e1)
 
     local e2=e1:Clone()
-	e2:SetType(EFFECT_TYPE_TRIGGER_O)
+	e2:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_TRIGGER_O)
 	e2:SetProperty(EFFECT_FLAG_CARD_TARGET+EFFECT_FLAG_DELAY)
 	e2:SetCode(EVENT_CUSTOM+id)
 	e2:SetCondition(s.pop_con)
 	c:RegisterEffect(e2)
+    --[[
     aux.GlobalCheck(s,function()
 		local ge1=Effect.CreateEffect(c)
 		ge1:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
@@ -30,6 +31,7 @@ function s.initial_effect(c)
 		ge1:SetOperation(s.regop)
 		Duel.RegisterEffect(ge1,0)
 	end)
+    ]]
 
     --During the Main Phase (Quick Effect): You can target 1 monster your opponent controls; 
     --If that monster is still on the field when this effect resolves, shuffle it into the Deck, 
