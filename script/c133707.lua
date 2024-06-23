@@ -3,7 +3,7 @@ local T0_SETNAME = 0x69ac
 local s,id=GetID()
 function s.initial_effect(c)
     --If your opponent Special Summons a monster(s) from the Extra Deck: You can discard this card; 
-    --Special Summon 1 "T-0" monster from your GY, 
+    --Special Summon 1 "T-0" monster from your hand or GY, 
     --then you can add 1 "T-0" card from your GY to your hand.
     local e1=Effect.CreateEffect(c)
 	e1:SetCategory(CATEGORY_SPECIAL_SUMMON)
@@ -47,8 +47,8 @@ function s.discard_ss_filter(c,e,tp)
 end
 function s.discard_tg(e,tp,eg,ep,ev,re,r,rp,chk)
 	if chk==0 then return Duel.GetLocationCount(tp,LOCATION_MZONE)>0
-		and Duel.IsExistingMatchingCard(s.discard_ss_filter,tp,LOCATION_GRAVE,0,1,nil,e,tp) end
-	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_GRAVE)
+		and Duel.IsExistingMatchingCard(s.discard_ss_filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,nil,e,tp) end
+	Duel.SetOperationInfo(0,CATEGORY_SPECIAL_SUMMON,nil,1,tp,LOCATION_HAND+LOCATION_GRAVE)
 end
 function s.discard_add_filter(c)
 	return c:IsSetCard(T0_SETNAME) and c:IsAbleToHand()
@@ -56,7 +56,7 @@ end
 function s.discard_op(e,tp,eg,ep,ev,re,r,rp)
 	if Duel.GetLocationCount(tp,LOCATION_MZONE)<=0 then return end
 	Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_SPSUMMON)
-	local g=Duel.SelectMatchingCard(tp,s.discard_ss_filter,tp,LOCATION_GRAVE,0,1,1,nil,e,tp)
+	local g=Duel.SelectMatchingCard(tp,s.discard_ss_filter,tp,LOCATION_HAND+LOCATION_GRAVE,0,1,1,nil,e,tp)
 	if #g>0 then
 		Duel.SpecialSummon(g,0,tp,tp,false,false,POS_FACEUP)
 	end
