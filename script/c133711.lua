@@ -27,7 +27,7 @@ function s.initial_effect(c)
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
 	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
-	e3:SetCode(EVENT_SPSUMMON_SUCCESS)
+	e3:SetCode(EVENT_REMOVE)
 	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e3:SetRange(LOCATION_SZONE)
 	e3:SetLabelObject(e2)
@@ -35,7 +35,7 @@ function s.initial_effect(c)
 	c:RegisterEffect(e3)
 	--Register attributes
 	aux.GlobalCheck(s,function()
-		s.attr_list={}
+		s.attr_list={} -- We will use attr_list to track the attributes that have already been added to hand.
 		s.attr_list[0]=0
 		s.attr_list[1]=0
 		aux.AddValuesReset(function()
@@ -45,18 +45,20 @@ function s.initial_effect(c)
 		end)
 end
 s.listed_series={TENYI_SETNAME}
-function s.search_trigger_filter(c,e,tp)
+
+function s.search_trigger_filter(c,e,tp) -- The filter for which cards trigger the search effect
 	local attr=c:GetAttribute()
-	return c:IsSetCard(TENYI_SETNAME) and c:IsControler(tp)
-		and c:IsLocation(LOCATION_MZONE) and c:IsPreviousLocation(LOCATION_EXTRA)
-		and s.attr_list[tp]&attr==0
+	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp
+		and c:IsLocation(LOCATION_REMOVED) and c:IsPreviousLocation(LOCATION_HAND+LOCATION_GRAVE)
 		and c:IsCanBeEffectTarget(e)
 		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,attr)
 end
-function s.search_filter(c,attr)
-	return c:IsSetCard(TENYI_SETNAME) and c:IsAttribute(attr) and c:IsAbleToHand()
+
+function s.search_filter(c,attr) -- The filter for which cards can be added to hand
+	return c:IsSetCard(TENYI_SETNAME) and not c:IsAttribute(attr) and s.attr_list[tp]&c:GetAttribute()==0 and c:IsAbleToHand()
 end
-function s.register_op(e,tp,eg,ep,ev,re,r,rp)
+
+function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
 	local tg=eg:Filter(s.search_trigger_filter,nil,e,tp)
 	if #tg>0 then
 		for tc in aux.Next(tg) do
@@ -70,6 +72,7 @@ function s.register_op(e,tp,eg,ep,ev,re,r,rp)
 		Duel.RaiseSingleEvent(e:GetHandler(),EVENT_CUSTOM+id,e,0,tp,tp,0)
 	end
 end
+
 function s.search_tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	local g=e:GetLabelObject():Filter(s.search_trigger_filter,nil,e,tp)
 	if chkc then return g:IsContains(chkc) and s.search_trigger_filter(chkc,e,tp) end
@@ -84,18 +87,20 @@ function s.search_tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
 	end
 	Duel.SetOperationInfo(0,CATEGORY_TOHAND,nil,1,tp,LOCATION_DECK)
 end
+
 function s.search_op(e,tp,eg,ep,ev,re,r,rp)
 	local c=e:GetHandler()
 	local tc=Duel.GetFirstTarget()
 	local att=tc:GetAttribute()
 	if not c:IsRelateToEffect(e) then return end
-	if tc and tc:IsFaceup() and tc:IsRelateToEffect(e) then
+	if tc and tc:IsRelateToEffect(e) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
 		local g=Duel.SelectMatchingCard(tp,s.search_filter,tp,LOCATION_DECK,0,1,1,nil,att)
 		if #g>0 then
-			Duel.SendtoHand(g,nil,REASON_EFFECT)
-			Duel.ConfirmCards(1-tp,g)
-			s.attr_list[tp]=s.attr_list[tp]|att
+			local searched_card = g:GetFirst()
+			Duel.SendtoHand(searched_card,nil,REASON_EFFECT)
+			Duel.ConfirmCards(1-tp,searched_card)
+			s.attr_list[tp]=s.attr_list[tp]|searched_card:GetAttribute() -- Update the attribute list
 		end
 		for _,str in aux.GetAttributeStrings(att) do
 			c:RegisterFlagEffect(0,RESET_EVENT+RESETS_STANDARD+RESET_PHASE+PHASE_END,EFFECT_FLAG_CLIENT_HINT,1,0,str)
@@ -113,9 +118,11 @@ function s.search_op(e,tp,eg,ep,ev,re,r,rp)
 	--lizard check
 	aux.addTempLizardCheck(e:GetHandler(),tp,s.lizfilter)
 end
+
 function s.splimit(e,c,sump,sumtype,sumpos,targetp,se)
-	return not c:IsRace(RACE_CYBERSE) and c:IsLocation(LOCATION_EXTRA)
+	return not c:IsRace(RACE_WYRM) and c:IsLocation(LOCATION_EXTRA)
 end
+
 function s.lizfilter(e,c)
-	return not c:IsOriginalRace(RACE_CYBERSE)
+	return not c:IsOriginalRace(RACE_WYRM)
 end
