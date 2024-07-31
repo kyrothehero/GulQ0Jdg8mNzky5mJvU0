@@ -51,11 +51,11 @@ function s.search_trigger_filter(c,e,tp) -- The filter for which cards trigger t
 	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp
 		and c:IsLocation(LOCATION_REMOVED) and c:IsPreviousLocation(LOCATION_HAND+LOCATION_GRAVE)
 		and c:IsCanBeEffectTarget(e)
-		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,attr)
+		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,tp,attr)
 end
 
-function s.search_filter(c,attr) -- The filter for which cards can be added to hand
-	return c:IsSetCard(TENYI_SETNAME) and c:IsMonster() and not c:IsAttribute(attr) and --[[s.attr_list[tp]]0&c:GetAttribute()==0 and c:IsAbleToHand()
+function s.search_filter(c,tp,attr) -- The filter for which cards can be added to hand
+	return c:IsSetCard(TENYI_SETNAME) and c:IsMonster() and not c:IsAttribute(attr) and s.attr_list[tp]0&c:GetAttribute()==0 and c:IsAbleToHand()
 end
 
 function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
@@ -95,7 +95,7 @@ function s.search_op(e,tp,eg,ep,ev,re,r,rp)
 	if not c:IsRelateToEffect(e) then return end
 	if tc and tc:IsRelateToEffect(e) then
 		Duel.Hint(HINT_SELECTMSG,tp,HINTMSG_ATOHAND)
-		local g=Duel.SelectMatchingCard(tp,s.search_filter,tp,LOCATION_DECK,0,1,1,nil,att)
+		local g=Duel.SelectMatchingCard(tp,s.search_filter,tp,LOCATION_DECK,0,1,1,nil,tp,att)
 		if #g>0 then
 			local searched_card = g:GetFirst()
 			Duel.SendtoHand(searched_card,nil,REASON_EFFECT)
