@@ -55,7 +55,7 @@ function s.search_trigger_filter(c,e,tp) -- The filter for which cards trigger t
 end
 
 function s.search_filter(c,attr) -- The filter for which cards can be added to hand
-	return c:IsSetCard(TENYI_SETNAME) and c:IsMonster() and not c:IsAttribute(attr) and s.attr_list[tp]&0--[[c:GetAttribute()]]==0 and c:IsAbleToHand()
+	return c:IsSetCard(TENYI_SETNAME) and c:IsMonster() and not c:IsAttribute(attr) and --[[s.attr_list[tp]]0&c:GetAttribute()==0 and c:IsAbleToHand()
 end
 
 function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
