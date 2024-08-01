@@ -13,7 +13,7 @@ function s.initial_effect(c)
 	e1:SetCode(EFFECT_REMOVE_TYPE)
 	e1:SetRange(LOCATION_MZONE)
 	e1:SetValue(TYPE_EFFECT)
-	e1:SetCondition(s.eqcon1)
+	--e1:SetCondition(s.eqcon1)
 	c:RegisterEffect(e1)
 
 	--If this card is Special Summoned: You can add 1 "Tenyi" card from your Deck to your hand.
