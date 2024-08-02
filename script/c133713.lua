@@ -19,6 +19,7 @@ function s.initial_effect(c)
 	--You can target 1 face-up monster your opponent controls; 
 	--immediately after this effect resolves, Link Summon 1 non-Effect Link Monster 
 	--by using only that opponent's monster and this card you control as material.
+	--You can only use this effect of "Anguish of the Tenyi" once per turn.
 	local e2=Effect.CreateEffect(c)
 	e2:SetDescription(aux.Stringid(id,0))
 	e2:SetType(EFFECT_TYPE_IGNITION)
@@ -28,19 +29,11 @@ function s.initial_effect(c)
 	e2:SetTarget(s.target)
 	e2:SetOperation(s.operation)
 	c:RegisterEffect(e2)
-
-	--(Quick Effect): You can target 1 non-Effect Monster you control 
-	--and 1 card your opponent controls; destroy them.
-	
-
-
-	
-
 end
 --s.listed_series={TENYI_SETNAME}
 
 function s.lkfilter(c,mg)
-	return c:IsAttribute(ATTRIBUTE_DARK) and not c:IsCode(id) and c:IsLinkSummonable(nil,mg,2,2)
+	return not c:IsType(TYPE_EFFECT) and c:IsLinkSummonable(nil,mg,2,2)
 end
 function s.filter(tc,c,tp)
 	local mg=Group.FromCards(c,tc)
