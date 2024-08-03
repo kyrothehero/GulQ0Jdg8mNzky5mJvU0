@@ -26,7 +26,7 @@ function s.initial_effect(c)
 	--Mass register
 	local e3=Effect.CreateEffect(c)
 	e3:SetDescription(aux.Stringid(id,1))
-	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS)
+	e3:SetType(EFFECT_TYPE_FIELD+EFFECT_TYPE_CONTINUOUS+EFFECT_TYPE_ACTIVATE)
 	e3:SetCode(EVENT_REMOVE)
 	e3:SetProperty(EFFECT_FLAG_CANNOT_DISABLE)
 	e3:SetRange(LOCATION_SZONE)
@@ -50,7 +50,7 @@ function s.search_trigger_filter(c,e,tp,re,rp) -- The filter for which cards tri
 	--local attr=c:GetAttribute()
 	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp and c:IsMonster()
 		and c:IsLocation(LOCATION_REMOVED) and c:IsPreviousLocation(LOCATION_HAND+LOCATION_GRAVE)
-		and c:IsReason(REASON_COST) and re --[[and re:IsActivated()]] and re:GetHandler():IsSetCard(TENYI_SETNAME)
+		and c:IsReason(REASON_COST) and re and re:IsActivated() and re:GetHandler():IsSetCard(TENYI_SETNAME)
 		and rp==tp and c:IsCanBeEffectTarget(e)
 		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,tp,c:GetAttribute())
 end
