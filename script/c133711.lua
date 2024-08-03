@@ -50,7 +50,7 @@ function s.search_trigger_filter(c,e,tp,re,rp) -- The filter for which cards tri
 	--local attr=c:GetAttribute()
 	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp and c:IsMonster()
 		and c:IsLocation(LOCATION_REMOVED) and c:IsPreviousLocation(LOCATION_HAND+LOCATION_GRAVE)
-		and c:IsReason(REASON_COST) and re --[[and re:IsActivated()]] and re:GetHandler():IsSetCard(TENYI_SETNAME)
+		and c:IsReason(REASON_COST) and re --[[and re:IsActivated()]] and re:GetHandler():IsSetCard(0x16d)
 		and rp==tp and c:IsCanBeEffectTarget(e)
 		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,tp,c:GetAttribute())
 end
