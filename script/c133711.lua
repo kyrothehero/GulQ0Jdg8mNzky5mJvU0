@@ -70,7 +70,7 @@ function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
 		g:Merge(tg)
 		g:Remove(function(c) return c:GetFlagEffect(id)==0 end,nil)
 		e:GetLabelObject():SetLabelObject(g)
-		Duel.RaiseSingleEvent(e:GetHandler(),EVENT_CUSTOM+id,e,0,tp,tp,0)
+		Duel.RaiseSingleEvent(e:GetHandler(),EVENT_CUSTOM+id,re,0,tp,tp,0)
 	end
 end
 
