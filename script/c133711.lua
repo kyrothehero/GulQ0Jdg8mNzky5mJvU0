@@ -46,12 +46,13 @@ function s.initial_effect(c)
 end
 s.listed_series={TENYI_SETNAME}
 
-function s.search_trigger_filter(c,e,tp) -- The filter for which cards trigger the search effect
-	local attr=c:GetAttribute()
-	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp
+function s.search_trigger_filter(c,e,tp,re,rp) -- The filter for which cards trigger the search effect
+	--local attr=c:GetAttribute()
+	return c:IsSetCard(TENYI_SETNAME) and c:GetOwner()==tp and c:IsMonster()
 		and c:IsLocation(LOCATION_REMOVED) and c:IsPreviousLocation(LOCATION_HAND+LOCATION_GRAVE)
-		and c:IsCanBeEffectTarget(e)
-		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,tp,attr)
+		and c:IsReason(REASON_COST) and re and re:IsActivated() and re:GetHandler():IsSetCard(TENYI_SETNAME)
+		and rp==tp and c:IsCanBeEffectTarget(e)
+		and Duel.IsExistingMatchingCard(s.search_filter,tp,LOCATION_DECK,0,1,nil,tp,c:GetAttribute())
 end
 
 function s.search_filter(c,tp,attr) -- The filter for which cards can be added to hand
@@ -59,7 +60,7 @@ function s.search_filter(c,tp,attr) -- The filter for which cards can be added t
 end
 
 function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
-	local tg=eg:Filter(s.search_trigger_filter,nil,e,tp)
+	local tg=eg:Filter(s.search_trigger_filter,nil,e,tp,re,rp)
 	if #tg>0 then
 		for tc in aux.Next(tg) do
 			tc:RegisterFlagEffect(id,RESET_CHAIN,0,1)
@@ -74,8 +75,8 @@ function s.register_op(e,tp,eg,ep,ev,re,r,rp) -- Event handler for banish events
 end
 
 function s.search_tg(e,tp,eg,ep,ev,re,r,rp,chk,chkc)
-	local g=e:GetLabelObject():Filter(s.search_trigger_filter,nil,e,tp)
-	if chkc then return g:IsContains(chkc) and s.search_trigger_filter(chkc,e,tp) end
+	local g=e:GetLabelObject():Filter(s.search_trigger_filter,nil,e,tp,re,rp)
+	if chkc then return g:IsContains(chkc) and s.search_trigger_filter(chkc,e,tp,re,rp) end
 	if chk==0 then return #g>0 and Duel.GetFlagEffect(tp,id)==0 end
 	Duel.RegisterFlagEffect(tp,id,RESET_CHAIN,0,1)
 	if #g==1 then
